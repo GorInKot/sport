@@ -1,0 +1,100 @@
+:root {
+  --bg: #0f1419;
+  --card: #1a212b;
+  --line: #2a3340;
+  --text: #e6edf3;
+  --muted: #8b98a8;
+  --p1: #2f81f7;
+  --px: #8b949e;
+  --p2: #f7642f;
+  --green: #2ea043;
+  --gold: #d4a017;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+a { color: inherit; text-decoration: none; }
+
+.topbar {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 16px 24px; border-bottom: 1px solid var(--line);
+}
+.logo { font-size: 22px; font-weight: 700; }
+.tagline { color: var(--muted); font-size: 13px; }
+main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+footer {
+  max-width: 1000px; margin: 32px auto; padding: 16px 24px;
+  color: var(--muted); font-size: 12px; border-top: 1px solid var(--line);
+}
+footer a { color: var(--p1); }
+
+.summary { color: var(--muted); margin-bottom: 18px; }
+.empty { color: var(--muted); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px; display: block; transition: border-color .15s, transform .15s;
+}
+.card:hover { border-color: var(--p1); transform: translateY(-2px); }
+.card-head { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+.teams { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-weight: 600; }
+.teams .vs { color: var(--muted); }
+.team { flex: 1; }
+.team.away { text-align: right; }
+
+.probbar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; font-size: 11px; }
+.probbar.big { height: 34px; font-size: 13px; margin: 12px 0; }
+.seg { display: flex; align-items: center; justify-content: center; color: #fff; white-space: nowrap; overflow: hidden; }
+.seg.p1 { background: var(--p1); }
+.seg.px { background: var(--px); }
+.seg.p2 { background: var(--p2); }
+
+.pick { margin-top: 10px; font-size: 14px; }
+.pick-label { color: var(--muted); }
+.pick-value { font-weight: 600; }
+.conf { display: inline-block; margin-left: 6px; font-size: 11px; padding: 1px 7px; border-radius: 10px; }
+.conf-high { background: rgba(46,160,67,.2); color: var(--green); }
+.conf-mid { background: rgba(212,160,23,.2); color: var(--gold); }
+.conf-low { background: rgba(139,152,168,.2); color: var(--muted); }
+
+.quick { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+.quick b { color: var(--text); }
+.badge-drop { color: var(--green); font-weight: 600; }
+
+/* detail */
+.back { color: var(--p1); font-size: 14px; }
+.detail-head { margin: 14px 0 24px; }
+.detail-head h1 { margin: 6px 0; font-size: 28px; }
+.detail-head .dash { color: var(--muted); }
+.detail-head .league, .detail-head .time { color: var(--muted); font-size: 13px; }
+
+.block { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+.block h2 { margin: 0 0 12px; font-size: 16px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+
+table.odds { width: 100%; border-collapse: collapse; margin: 8px 0; }
+table.odds th, table.odds td { padding: 6px 10px; text-align: center; border-bottom: 1px solid var(--line); }
+table.odds td:first-child, table.odds th:first-child { text-align: left; color: var(--muted); }
+
+.big-pick { font-size: 16px; color: var(--gold); font-weight: 600; }
+ul.kv { list-style: none; padding: 0; margin: 0; }
+ul.kv li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--line); }
+ul.kv li span { color: var(--muted); }
+
+.scores { display: flex; flex-wrap: wrap; gap: 10px; }
+.score { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; text-align: center; min-width: 70px; }
+.score b { display: block; font-size: 18px; }
+.score span { color: var(--muted); font-size: 12px; }
+
+.notes ul { margin: 0; padding-left: 18px; }
+.notes li { margin: 4px 0; }
+.summary-text :is(p, b) { color: var(--text); }
+.summary-text { line-height: 1.7; }
+.err { color: var(--p2); white-space: pre-wrap; }

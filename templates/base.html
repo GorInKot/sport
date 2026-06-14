@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Прогноз — футбол{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="{{ url_for('index') }}">⚽ Прогноз</a>
+    <span class="tagline">прогнозы по коэффициентам и прогрузам</span>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    Источники: <a href="https://stavka.tv" target="_blank" rel="noopener">stavka.tv</a> ·
+    <a href="https://arbworld.net" target="_blank" rel="noopener">arbworld.net</a>.
+    Не является инвестиционной рекомендацией.
+  </footer>
+</body>
+</html>

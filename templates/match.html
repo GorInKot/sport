@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% set m = p.match %}
+{% block title %}{{ m.home }} — {{ m.away }} · Прогноз{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('index') }}">← ко всем матчам</a>
+
+<div class="detail-head">
+  <div class="league">{{ m.league }}{% if m.league_country %} · {{ m.league_country }}{% endif %}</div>
+  <h1>{{ m.home }} <span class="dash">—</span> {{ m.away }}</h1>
+  <div class="time">Начало: {{ m.kickoff | kickoff }}</div>
+</div>
+
+<section class="block">
+  <h2>Исход матча (1X2)</h2>
+  <div class="probbar big">
+    <div class="seg p1" style="width: {{ p.p_home | pct }}">П1 {{ p.p_home | pct }}</div>
+    <div class="seg px" style="width: {{ p.p_draw | pct }}">X {{ p.p_draw | pct }}</div>
+    <div class="seg p2" style="width: {{ p.p_away | pct }}">П2 {{ p.p_away | pct }}</div>
+  </div>
+  <table class="odds">
+    <tr><th></th><th>П1</th><th>X</th><th>П2</th></tr>
+    <tr><td>Коэффициент</td><td>{{ m.odds.w1 }}</td><td>{{ m.odds.x }}</td><td>{{ m.odds.w2 }}</td></tr>
+    <tr><td>Вероятность</td><td>{{ p.p_home | pct }}</td><td>{{ p.p_draw | pct }}</td><td>{{ p.p_away | pct }}</td></tr>
+  </table>
+  <p class="pick big-pick">★ {{ p.best_pick }} · уверенность {{ p.confidence | pct }}</p>
+</section>
+
+<div class="grid2">
+  <section class="block">
+    <h2>Двойной шанс</h2>
+    <ul class="kv">
+      {% for k, v in p.double_chance.items() %}
+        <li><span>{{ k }}</span><b>{{ v | pct }}</b></li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2>Голы</h2>
+    <ul class="kv">
+      <li><span>Ожид. голы {{ m.home }}</span><b>{{ "%.2f"|format(p.lambda_home) }}</b></li>
+      <li><span>Ожид. голы {{ m.away }}</span><b>{{ "%.2f"|format(p.lambda_away) }}</b></li>
+      <li><span>Тотал больше 2.5</span><b>{{ p.p_over_25 | pct }}</b></li>
+      <li><span>Тотал меньше 2.5</span><b>{{ (1 - p.p_over_25) | pct }}</b></li>
+      <li><span>Обе забьют</span><b>{{ p.p_btts | pct }}</b></li>
+    </ul>
+  </section>
+</div>
+
+<section class="block">
+  <h2>Вероятные счёта</h2>
+  <div class="scores">
+    {% for s in p.top_scores %}
+      <div class="score"><b>{{ s.label }}</b><span>{{ s.prob | pct }}</span></div>
+    {% endfor %}
+  </div>
+</section>
+
+{% if p.notes %}
+<section class="block notes">
+  <h2>Сигналы прогрузов (arbworld)</h2>
+  <ul>
+    {% for n in p.notes %}<li>{{ n }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if m.predictions_total %}
+<section class="block">
+  <h2>Сообщество stavka.tv</h2>
+  <p>Прогнозов оставлено: <b>{{ m.predictions_total }}</b>{% if m.has_expert %} · есть экспертные разборы{% endif %}.</p>
+</section>
+{% endif %}
+
+{% if summary %}
+<section class="block summary-text">
+  <h2>Предматчевый разбор</h2>
+  {{ summary | safe }}
+</section>
+{% endif %}
+{% endblock %}

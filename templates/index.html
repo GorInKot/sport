@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="summary">
+  <strong>{{ total }}</strong> предстоящих матчей с прогнозом.
+  Прогрузы привязаны к <strong>{{ matched }}</strong> из них.
+</div>
+
+{% if not predictions %}
+  <p class="empty">Сейчас нет предстоящих матчей с полной линией 1X2.</p>
+{% endif %}
+
+<div class="cards">
+{% for p in predictions %}
+  {% set m = p.match %}
+  <a class="card" href="{{ url_for('match_detail', slug=m.slug) }}">
+    <div class="card-head">
+      <span class="league">{{ m.league }}</span>
+      <span class="time">{{ m.kickoff | kickoff }}</span>
+    </div>
+
+    <div class="teams">
+      <span class="team home">{{ m.home }}</span>
+      <span class="vs">—</span>
+      <span class="team away">{{ m.away }}</span>
+    </div>
+
+    <div class="probbar">
+      <div class="seg p1" style="width: {{ p.p_home | pct }}" title="П1">{{ p.p_home | pct }}</div>
+      <div class="seg px" style="width: {{ p.p_draw | pct }}" title="X">{{ p.p_draw | pct }}</div>
+      <div class="seg p2" style="width: {{ p.p_away | pct }}" title="П2">{{ p.p_away | pct }}</div>
+    </div>
+
+    <div class="pick">
+      <span class="pick-label">Прогноз:</span>
+      <span class="pick-value">{{ p.best_pick }}</span>
+      <span class="conf conf-{{ 'high' if p.confidence > 0.5 else 'mid' if p.confidence > 0.3 else 'low' }}">
+        уверенность {{ p.confidence | pct }}
+      </span>
+    </div>
+
+    <div class="quick">
+      <span>Вероятный счёт: <b>{{ p.top_scores[0].label }}</b></span>
+      <span>ТБ 2.5: <b>{{ p.p_over_25 | pct }}</b></span>
+      <span>ОЗ: <b>{{ p.p_btts | pct }}</b></span>
+      {% if m.arb %}<span class="badge-drop">прогруз ✓</span>{% endif %}
+    </div>
+  </a>
+{% endfor %}
+</div>
+{% endblock %}
