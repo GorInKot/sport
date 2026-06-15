@@ -5,6 +5,22 @@
   Прогрузы привязаны к <strong>{{ matched }}</strong> из них.
 </div>
 
+{% if leagues %}
+<form class="filter" method="get" action="{{ url_for('index') }}">
+  <label for="league">Чемпионат:</label>
+  <select id="league" name="league" onchange="this.form.submit()">
+    <option value="">Все чемпионаты</option>
+    {% for name, count in leagues %}
+      <option value="{{ name }}" {{ 'selected' if name == selected_league }}>{{ name }} ({{ count }})</option>
+    {% endfor %}
+  </select>
+  {% if selected_league %}
+    <a class="filter-reset" href="{{ url_for('index') }}">сбросить</a>
+  {% endif %}
+  <noscript><button type="submit">Показать</button></noscript>
+</form>
+{% endif %}
+
 {% if not predictions %}
   <p class="empty">Сейчас нет предстоящих матчей с полной линией 1X2.</p>
 {% endif %}

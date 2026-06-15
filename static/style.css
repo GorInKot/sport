@@ -36,6 +36,16 @@ footer a { color: var(--p1); }
 .summary { color: var(--muted); margin-bottom: 18px; }
 .empty { color: var(--muted); }
 
+.filter { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.filter label { color: var(--muted); font-size: 13px; }
+.filter select {
+  background: var(--card); color: var(--text);
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 7px 10px; font-size: 14px; max-width: 100%;
+}
+.filter select:focus { outline: none; border-color: var(--p1); }
+.filter-reset { color: var(--p1); font-size: 13px; }
+
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
 .card {
   background: var(--card); border: 1px solid var(--line); border-radius: 12px;

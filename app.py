@@ -11,7 +11,7 @@ from __future__ import annotations
 import time
 from threading import Lock
 
-from flask import Flask, abort, render_template
+from flask import Flask, abort, render_template, request
 
 from prognoz import arbworld, stavka
 from prognoz.matcher import attach_drops
@@ -49,7 +49,7 @@ def _load_matches():
 @app.route("/")
 def index():
     try:
-        matches, matched = _load_matches()
+        matches, _matched = _load_matches()
     except Exception as exc:
         return render_template("error.html", error=str(exc)), 502
 
@@ -58,11 +58,28 @@ def index():
         p = predict(m)
         if p:
             cards.append(p)
+
+    # Список доступных чемпионатов (с числом матчей) для фильтра
+    counts: dict[str, int] = {}
+    for p in cards:
+        league = p.match.league
+        if league:
+            counts[league] = counts.get(league, 0) + 1
+    leagues = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+
+    selected = (request.args.get("league") or "").strip()
+    if selected:
+        cards = [p for p in cards if p.match.league == selected]
+
+    shown_matched = sum(1 for p in cards if p.match.arb)
+
     return render_template(
         "index.html",
         predictions=cards,
         total=len(cards),
-        matched=matched,
+        matched=shown_matched,
+        leagues=leagues,
+        selected_league=selected,
     )
 
 
